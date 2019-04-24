@@ -19,9 +19,7 @@ export default class RainContainer{
   initConfig(config){
     config = config || {}
     let dconf = {
-      
       prepend: false,
-
       container: null,
       breakpointLG: 1200,
       breakpointMD: 1024,
@@ -30,13 +28,14 @@ export default class RainContainer{
       cols: {
         lg: 5,
         md: 4,
-        sm: 3,
-        xs: 2
+        sm: 2,
+        xs: 1
       }
     }
     this.el = config.container || config.element || config.el || config.holder || config.parent
     this.config = Object.assign(dconf, config)
     this.config.cols = Object.assign(dconf.cols, config.cols)
+    console.log(this.config)
   }
 
   initChildren(){
@@ -48,6 +47,7 @@ export default class RainContainer{
   }
 
   build(){
+    this.el.classList.add('rain-container')
     this.clearChildren()
     for (let i = 0; i < this.cols; i++) {
       let col = this.getColumn()
@@ -111,6 +111,7 @@ export default class RainContainer{
   }
   applyBreakPoints(){
     let w = window.innerWidth
+    this.el.setAttribute('data-col', this.getBreakpointCols('lg') )
     if( this.config.breakpointLG >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('lg') )
     if( this.config.breakpointMD >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('md') )
     if( this.config.breakpointSM >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('sm') )
