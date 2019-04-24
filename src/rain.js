@@ -19,6 +19,9 @@ export default class RainContainer{
   initConfig(config){
     config = config || {}
     let dconf = {
+      
+      prepend: false,
+
       container: null,
       breakpointLG: 1200,
       breakpointMD: 1024,
@@ -86,7 +89,10 @@ export default class RainContainer{
 
   add(element){
     let lowest = this.getLowestColumn()
-    lowest.insertBefore(element, lowest.firstChild)
+
+    if(this.config.prepend) lowest.insertBefore(element, lowest.firstChild)
+    else lowest.appendChild(element)
+
     let index = this.el.getElementsByClassName('rain-element').length
 
     if(!element.classList.contains('rain-element')){
