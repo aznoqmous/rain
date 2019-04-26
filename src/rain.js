@@ -91,7 +91,13 @@ export default class RainContainer{
     this.el.innerHTML = ''
   }
 
-  add(element){
+  add(addedElement){
+    let element = addedElement
+    if(typeof(addedElement) == 'string') {
+      element = document.createElement('div')
+      element.innerHTML = addedElement;
+    }
+
     let lowest = this.getLowestColumn()
 
     if(this.config.prepend) lowest.insertBefore(element, lowest.firstChild)
@@ -105,6 +111,7 @@ export default class RainContainer{
       element.setAttribute('data-index', index)
     }
     this.onAdd(element, element.getAttribute('data-index'))
+    return element;
   }
 
   bindEvents(){
