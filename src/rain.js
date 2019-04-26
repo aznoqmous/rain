@@ -9,6 +9,7 @@ export default class RainContainer{
   }
 
   init(){
+    this.currentBreakPoint = this.getCurrentBreakPoint()
     this.applyBreakPoints()
     this.cols     = this.el.getAttribute('data-col') || 2
     this.children = this.extractChildren()
@@ -106,7 +107,7 @@ export default class RainContainer{
   bindEvents(){
     var self = this
     window.addEventListener('resize', function(){
-      self.init()
+      if(this.currentBreakPoint != this.getCurrentBreakPoint()) self.init()
     })
   }
   applyBreakPoints(){
@@ -116,6 +117,15 @@ export default class RainContainer{
     if( this.config.breakpointMD >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('md') )
     if( this.config.breakpointSM >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('sm') )
     if( this.config.breakpointXS >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('xs') )
+  }
+  getCurrentBreakPoint(){
+    let w = window.innerWidth
+
+    if( this.config.breakpointLG >= w ) return 'lg'
+    if( this.config.breakpointMD >= w ) return 'md'
+    if( this.config.breakpointSM >= w ) return 'sm'
+    if( this.config.breakpointXS >= w ) return 'xs'
+    return 'xs';
   }
 
   getBreakpointCols(bp){
