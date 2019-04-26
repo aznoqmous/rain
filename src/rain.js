@@ -10,6 +10,9 @@ export default class RainContainer{
 
   init(){
     this.currentBreakPoint = this.getCurrentBreakPoint()
+
+    if(this.config.debug) console.log('rain.js: breakpoint '+this.currentBreakPoint)
+
     this.applyBreakPoints()
     this.cols     = this.el.getAttribute('data-col') || 2
     this.children = this.extractChildren()
@@ -20,7 +23,8 @@ export default class RainContainer{
   initConfig(config){
     config = config || {}
     let dconf = {
-      prepend: false,
+      prepend: false, // insert element at top of the list
+      debug: false, // activate logs
       container: null,
       breakpointLG: 1200,
       breakpointMD: 1024,
@@ -36,7 +40,6 @@ export default class RainContainer{
     this.el = config.container || config.element || config.el || config.holder || config.parent
     this.config = Object.assign(dconf, config)
     this.config.cols = Object.assign(dconf.cols, config.cols)
-    console.log(this.config)
   }
 
   initChildren(){
@@ -106,8 +109,11 @@ export default class RainContainer{
 
   bindEvents(){
     var self = this
-    window.addEventListener('resize', function(){
-      if(this.currentBreakPoint != this.getCurrentBreakPoint()) self.init()
+    window.addEventListener('resize', ()=>{
+      let newBreakpoint = this.getCurrentBreakPoint()
+      if ( ( this.currentBreakPoint != newBreakpoint )
+      && ( this.getBreakpointCols(this.currentBreakPoint) != this.getBreakpointCols(newBreakpoint) ) ) self.init()
+
     })
   }
   applyBreakPoints(){
@@ -118,13 +124,12 @@ export default class RainContainer{
     if( this.config.breakpointSM >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('sm') )
     if( this.config.breakpointXS >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('xs') )
   }
+
   getCurrentBreakPoint(){
     let w = window.innerWidth
-
-    if( this.config.breakpointLG >= w ) return 'lg'
-    if( this.config.breakpointMD >= w ) return 'md'
-    if( this.config.breakpointSM >= w ) return 'sm'
-    if( this.config.breakpointXS >= w ) return 'xs'
+    if( this.config.breakpointMD <= w ) return 'lg';
+    if( this.config.breakpointSM <= w ) return 'md';
+    if( this.config.breakpointXS <= w ) return 'sm';
     return 'xs';
   }
 
