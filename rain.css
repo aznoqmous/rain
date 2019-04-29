@@ -31,3 +31,11 @@
   padding-bottom: 20px;
   margin-bottom: 10px;
 }
+
+.rain-container .rain-column .rain-element{
+  opacity: 0;
+  transition: all 1s ease-out;
+}
+.rain-container .rain-column .rain-element.active{
+  opacity: 1;
+}
