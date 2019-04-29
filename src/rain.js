@@ -1,5 +1,6 @@
 export default class RainContainer{
   constructor(config){
+    window.rain = this
     this.initConfig(config)
     this.initChildren()
 
@@ -112,6 +113,11 @@ export default class RainContainer{
     }
     this.onAdd(element, element.getAttribute('data-index'))
     return element;
+  }
+  clear(){
+    this.children = []
+    this.clearChildren()
+    this.init()
   }
 
   bindEvents(){
