@@ -1,6 +1,6 @@
 export default class RainContainer{
   constructor(config){
-    window.rain = this
+
     this.initConfig(config)
     this.initChildren()
 
@@ -13,6 +13,7 @@ export default class RainContainer{
     this.currentBreakPoint = this.getCurrentBreakPoint()
 
     if(this.config.debug) console.log('rain.js: breakpoint '+this.currentBreakPoint)
+    if(this.config.debug) window.rain = this
 
     this.applyBreakPoints()
     this.cols     = this.el.getAttribute('data-col') || 2
@@ -36,7 +37,9 @@ export default class RainContainer{
         md: 4,
         sm: 2,
         xs: 1
-      }
+      },
+
+      childInterval: 100, // defer children apparition by given ms, dont if no value
     }
     this.el = config.container || config.element || config.el || config.holder || config.parent
     this.config = Object.assign(dconf, config)
@@ -65,6 +68,15 @@ export default class RainContainer{
     }
   }
 
+  applyBreakPoints(){
+    let w = window.innerWidth
+    this.el.setAttribute('data-col', this.getBreakpointCols('lg') )
+    if( this.config.breakpointLG >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('lg') )
+    if( this.config.breakpointMD >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('md') )
+    if( this.config.breakpointSM >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('sm') )
+    if( this.config.breakpointXS >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('xs') )
+  }
+
   getColumn(){
     var col = document.createElement('div')
     col.classList.add('rain-column')
@@ -81,6 +93,7 @@ export default class RainContainer{
   }
 
   extractChildren(){
+    // get method
     var children = []
     for (var i = 0; i < this.el.getElementsByClassName('rain-element').length; i++) {
       var child = this.el.getElementsByClassName('rain-element-'+i)[0]
@@ -94,25 +107,38 @@ export default class RainContainer{
 
   add(addedElement){
     let element = addedElement
-    if(typeof(addedElement) == 'string') {
-      element = document.createElement('div')
-      element.innerHTML = addedElement;
+    let timeout = 0
+
+    if(this.config.childInterval) {
+      if(!this.lastAddedT) this.lastAddedT = Date.now()
+      timeout = (this.lastAddedT - Date.now()) + this.config.childInterval
+      this.lastAddedT = Date.now() + timeout
+      console.log(timeout, this.lastAddedT)
     }
 
-    let lowest = this.getLowestColumn()
+    setTimeout(()=>{
 
-    if(this.config.prepend) lowest.insertBefore(element, lowest.firstChild)
-    else lowest.appendChild(element)
+      if(typeof(addedElement) == 'string') {
+        element = document.createElement('div')
+        element.innerHTML = addedElement;
+      }
 
-    let index = this.el.getElementsByClassName('rain-element').length
+      let lowest = this.getLowestColumn()
 
-    if(!element.classList.contains('rain-element')){
-      element.classList.add('rain-element')
-      element.classList.add('rain-element-' + index )
-      element.setAttribute('data-index', index)
-    }
-    this.onAdd(element, element.getAttribute('data-index'))
-    return element;
+      if(this.config.prepend) lowest.insertBefore(element, lowest.firstChild)
+      else lowest.appendChild(element)
+
+      let index = this.el.getElementsByClassName('rain-element').length
+
+      if(!element.classList.contains('rain-element')){
+        element.classList.add('rain-element')
+        element.classList.add('rain-element-' + index )
+        element.setAttribute('data-index', index)
+      }
+      this.onAdd(element, element.getAttribute('data-index'))
+
+    }, timeout)
+
   }
   clear(){
     this.children = []
@@ -129,14 +155,6 @@ export default class RainContainer{
 
     })
   }
-  applyBreakPoints(){
-    let w = window.innerWidth
-    this.el.setAttribute('data-col', this.getBreakpointCols('lg') )
-    if( this.config.breakpointLG >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('lg') )
-    if( this.config.breakpointMD >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('md') )
-    if( this.config.breakpointSM >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('sm') )
-    if( this.config.breakpointXS >= w ) this.el.setAttribute('data-col', this.getBreakpointCols('xs') )
-  }
 
   getCurrentBreakPoint(){
     let w = window.innerWidth
@@ -145,7 +163,6 @@ export default class RainContainer{
     if( this.config.breakpointXS <= w ) return 'sm';
     return 'xs';
   }
-
   getBreakpointCols(bp){
     let attrCol = this.el.getAttribute('data-'+bp+'-col')
     if( attrCol ) return attrCol
