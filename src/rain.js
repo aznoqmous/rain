@@ -112,6 +112,7 @@ export default class RainContainer{
     if(this.config.childInterval) {
       if(!this.lastAddedT) this.lastAddedT = Date.now()
       timeout = (this.lastAddedT - Date.now()) + this.config.childInterval
+      if(timeout < 0) timeout = 0
       this.lastAddedT = Date.now() + timeout
     }
 
