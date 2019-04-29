@@ -113,7 +113,6 @@ export default class RainContainer{
       if(!this.lastAddedT) this.lastAddedT = Date.now()
       timeout = (this.lastAddedT - Date.now()) + this.config.childInterval
       this.lastAddedT = Date.now() + timeout
-      console.log(timeout, this.lastAddedT)
     }
 
     setTimeout(()=>{
