@@ -20,7 +20,7 @@
   <body>
 
     <div id="rainContainer">
-      <div>
+      <!-- <div>
         hey im a <br>
         simple div
       </div>
@@ -42,7 +42,7 @@
       </div>
       <div>
         im the 7th div
-      </div>
+      </div> -->
     </div>
 
   </body>
@@ -52,34 +52,41 @@
 
       let element = document.getElementById('rainContainer');
 
-      let rainContainer = new Rain({
-
-        parent: element
-
-      })
+      // let rainContainer = new Rain({
+      //
+      //   parent: element
+      //
+      // })
 
       // Rain-bow (:
-      //
-      // let rainContainer = new Rain({
-      //   container: container,
-      //   onAdd: (el, index)=>{
-      //     // el.innerHTML = index
-      //     let T = 255
-      //     let h = 180 + 60 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
-      //     let s = 50 * Math.sin( 2 * index / T * 2 * Math.PI ) + 100
-      //     el.style.backgroundColor = 'hsl( ' + h +', ' + s + '%, 50%)'
-      //     setTimeout(()=>{
-      //       el.classList.add('active')
-      //     }, 200)
-      //   }
-      // });
-      // loop()
-      // function loop(){
-      //   var randomBlock = document.createElement('div')
-      //   rainContainer.add(randomBlock);
-      //   randomBlock.style.height = (Math.random()*100+100) / 2 +'px'
-      //   requestAnimationFrame(loop)
-      // }
+
+      let rainContainer = new Rain({
+        parent: element,
+        // prepend: true,
+        debug: true,
+        childInterval: 200,
+        onAdd: (el, index)=>{
+          // el.innerHTML = index
+          let T = 255
+          // let h = 180 + 60 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
+          // let s = 50 * Math.sin( 2 * index / T * 2 * Math.PI ) + 100
+          let h = 255 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
+          // el.style.backgroundColor = 'hsl( ' + h +', ' + s + '%, 50%)'
+          el.style.backgroundColor = 'hsl( ' + h +', 100%, 50%)'
+          el.style.height = (Math.random()*200+10) / 2 +'px'
+
+          setTimeout(()=>{
+            el.classList.add('active')
+          }, 100)
+        }
+      });
+
+      var start = Date.now();
+      loop()
+      function loop(){
+        let randomBlock = rainContainer.add('<div class="blou"></div>')
+        if(Date.now() - start < 2000) requestAnimationFrame(loop)
+      }
 
     });
   </script>
