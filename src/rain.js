@@ -32,6 +32,7 @@ export default class RainContainer{
       breakpointMD: 1024,
       breakpointSM: 768,
       breakpointXS: 640,
+      childInterval: 100, // defer children apparition by given ms, dont if no value
       cols: {
         lg: 5,
         md: 4,
@@ -39,7 +40,8 @@ export default class RainContainer{
         xs: 1
       },
 
-      childInterval: 100, // defer children apparition by given ms, dont if no value
+      //callbacks
+      onChange: null
     }
     this.el = config.container || config.element || config.el || config.holder || config.parent
     this.config = Object.assign(dconf, config)
@@ -147,12 +149,12 @@ export default class RainContainer{
   }
 
   bindEvents(){
-    var self = this
     window.addEventListener('resize', ()=>{
       let newBreakpoint = this.getCurrentBreakPoint()
       if ( ( this.currentBreakPoint != newBreakpoint )
-      && ( this.getBreakpointCols(this.currentBreakPoint) != this.getBreakpointCols(newBreakpoint) ) ) self.init()
+      && ( this.getBreakpointCols(this.currentBreakPoint) != this.getBreakpointCols(newBreakpoint) ) ) this.init()
 
+      for (let i = 0; i < this.el.children.length; i++) { this.onChange(this.el.children[i]) }
     })
   }
 
@@ -171,5 +173,9 @@ export default class RainContainer{
 
   onAdd(element, index){
     if(this.config.onAdd) this.config.onAdd(element, index)
+    this.onChange(element)
+  }
+  onChange(element){
+    if(this.config.onChange) this.config.onChange(element)
   }
 } //RainContainer
