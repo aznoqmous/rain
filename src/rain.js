@@ -40,8 +40,6 @@ export default class RainContainer{
         xs: 1
       },
 
-      //callbacks
-      onChange: null
     }
     this.el = config.container || config.element || config.el || config.holder || config.parent
     this.config = Object.assign(dconf, config)
@@ -99,7 +97,7 @@ export default class RainContainer{
     var children = []
     for (var i = 0; i < this.el.getElementsByClassName('rain-element').length; i++) {
       var child = this.el.getElementsByClassName('rain-element-'+i)[0]
-      children.push(child.cloneNode('true'))
+      this.add(child.cloneNode('true'))
     }
     return children
   }
@@ -153,8 +151,6 @@ export default class RainContainer{
       let newBreakpoint = this.getCurrentBreakPoint()
       if ( ( this.currentBreakPoint != newBreakpoint )
       && ( this.getBreakpointCols(this.currentBreakPoint) != this.getBreakpointCols(newBreakpoint) ) ) this.init()
-
-      for (let i = 0; i < this.el.children.length; i++) { this.onChange(this.el.children[i]) }
     })
   }
 
@@ -173,9 +169,5 @@ export default class RainContainer{
 
   onAdd(element, index){
     if(this.config.onAdd) this.config.onAdd(element, index)
-    this.onChange(element)
-  }
-  onChange(element){
-    if(this.config.onChange) this.config.onChange(element)
   }
 } //RainContainer
