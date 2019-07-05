@@ -40,6 +40,8 @@ export default class RainContainer{
         xs: 1
       },
 
+      //callbacks
+      onChange: null
     }
     this.el = config.container || config.element || config.el || config.holder || config.parent
     this.config = Object.assign(dconf, config)
@@ -47,11 +49,16 @@ export default class RainContainer{
   }
 
   initChildren(){
-    for (let i = 0; i < this.el.children.length; i++) {
-      let rainEl = this.el.children[i]
-      rainEl.classList.add('rain-element-'+i)
+    let children = [].slice.call(this.el.children)
+    // let rainChildren = []
+    children.map( (child, i) => {
+      let rainEl = document.createElement('div')
+      this.el.appendChild(rainEl)
+      rainEl.appendChild(child)
       rainEl.classList.add('rain-element')
-    }
+      rainEl.classList.add('rain-element-'+i)
+      console.log(rainEl.innerHTML)
+    })
   }
 
   build(){
@@ -62,10 +69,7 @@ export default class RainContainer{
       this.columns.push(col)
       this.el.appendChild(col)
     }
-    for (let i = 0; i < this.children.length; i++) {
-      let child = this.children[i]
-      this.add(child)
-    }
+    this.children.map(child => { this.add(child) })
   }
 
   applyBreakPoints(){
@@ -97,7 +101,7 @@ export default class RainContainer{
     var children = []
     for (var i = 0; i < this.el.getElementsByClassName('rain-element').length; i++) {
       var child = this.el.getElementsByClassName('rain-element-'+i)[0]
-      this.add(child.cloneNode('true'))
+      children.push(child.cloneNode('true'))
     }
     return children
   }
@@ -118,6 +122,7 @@ export default class RainContainer{
 
     setTimeout(()=>{
 
+
       if(typeof(addedElement) == 'string') {
         element = document.createElement('div')
         element.innerHTML = addedElement;
@@ -135,6 +140,7 @@ export default class RainContainer{
         element.classList.add('rain-element-' + index )
         element.setAttribute('data-index', index)
       }
+
       this.onAdd(element, element.getAttribute('data-index'))
 
     }, timeout)
@@ -147,10 +153,12 @@ export default class RainContainer{
   }
 
   bindEvents(){
+    var self = this
     window.addEventListener('resize', ()=>{
       let newBreakpoint = this.getCurrentBreakPoint()
       if ( ( this.currentBreakPoint != newBreakpoint )
-      && ( this.getBreakpointCols(this.currentBreakPoint) != this.getBreakpointCols(newBreakpoint) ) ) this.init()
+      && ( this.getBreakpointCols(this.currentBreakPoint) != this.getBreakpointCols(newBreakpoint) ) ) self.init()
+
     })
   }
 
