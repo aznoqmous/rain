@@ -91,8 +91,9 @@ export default class RainContainer{
     var min = this.columns[0]
     for (var i = 0; i < this.columns.length; i++) {
       var col = this.columns[i]
-      if(col.offsetHeight < min.offsetHeight) min = col
+      if(col.getBoundingClientRect().height < min.getBoundingClientRect().height) min = col
     }
+    if(this.config.debug) console.log(this.columns, min.getBoundingClientRect().height)
     return min
   }
 
