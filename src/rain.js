@@ -1,4 +1,4 @@
-export default class RainContainer{
+export default class Rain{
   constructor(config){
 
     this.initConfig(config)
