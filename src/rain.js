@@ -57,6 +57,7 @@ export default class RainContainer{
       rainEl.appendChild(child)
       rainEl.classList.add('rain-element')
       rainEl.classList.add('rain-element-'+i)
+      rainEl.setAttribute('data-index', i)
       console.log(rainEl.innerHTML)
     })
   }

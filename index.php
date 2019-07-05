@@ -20,11 +20,11 @@
   <body>
 
     <div id="rainContainer">
-      <div class="bleew">bleew</div>
-      <div class="bleew">bleew</div>
-      <div class="bleew">bleew</div>
-      <div class="bleew">bleew</div>
-      <div class="bleew">bleew</div>
+      <div class="blou">blou 1</div>
+      <div class="blou">blou 2</div>
+      <div class="blou">blou 3</div>
+      <div class="blou">blou 4</div>
+      <div class="blou">blou 5</div>
 
       <!-- <div>
         hey im a <br>
@@ -71,28 +71,25 @@
         // prepend: true,
         debug: true,
         childInterval: 200,
-        // onAdd: (el, index)=>{
-        //   // el.innerHTML = index
-        //   let T = 255
-        //   // let h = 180 + 60 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
-        //   // let s = 50 * Math.sin( 2 * index / T * 2 * Math.PI ) + 100
-        //   let h = 255 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
-        //   // el.style.backgroundColor = 'hsl( ' + h +', ' + s + '%, 50%)'
-        //   el.style.backgroundColor = 'hsl( ' + h +', 100%, 50%)'
-        //   el.style.height = (Math.random()*200+10) / 2 +'px'
-        //
-        //   setTimeout(()=>{
-        //     el.classList.add('active')
-        //   }, 100)
-        // }
-      });
+        onAdd: (el, index)=>{
+          let T = 255
+          // let h = 180 + 60 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
+          // let s = 50 * Math.sin( 2 * index / T * 2 * Math.PI ) + 100
+          let h = 255 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
+          // el.style.backgroundColor = 'hsl( ' + h +', ' + s + '%, 50%)'
+          el.style.backgroundColor = 'hsl( ' + h +', 100%, 50%)'
+          el.style.height = (Math.random()*200+10) / 2 +'px'
 
-      // var start = Date.now();
-      // loop()
-      // function loop(){
-      //   let randomBlock = rainContainer.add('<div class="blou"></div>')
-      //   if(Date.now() - start < 2000) requestAnimationFrame(loop)
-      // }
+          setTimeout(()=>{
+            el.classList.add('active')
+          }, 100)
+        }
+      });
+      setTimeout(()=>{
+        rainContainer.add('<div class="blou"></div>')
+      }, 1000)
+      rainContainer.add('<div class="blou"></div>')
+
 
     });
   </script>
