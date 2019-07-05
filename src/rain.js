@@ -89,12 +89,18 @@ export default class Rain{
 
   getLowestColumn(){
     var min = this.columns[0]
+    var minH = 10000000000
     let heights = []
     for (var i = 0; i < this.columns.length; i++) {
       var col = this.columns[i]
-      let h = col.getBoundingClientRect().height
+      if(!col.children.length) return col;
+      let lastChild = col.children[col.children.length-1]
+      let h = lastChild.getBoundingClientRect().top + lastChild.getBoundingClientRect().height
       heights.push( h )
-      if( h < min.getBoundingClientRect().height) min = col
+      if( h < minH) {
+        min = col
+        minH = h
+      }
     }
     if(this.config.debug) console.log('Columns heights : ', heights)
     return min
