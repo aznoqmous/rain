@@ -27,7 +27,7 @@ export default class Rain{
     config = config || {}
     let dconf = {
       prepend: false, // insert element at top of the list
-      debug: false, // activate logs
+      debug: false, // activate logs and set this rain instance accessible from console via 'rain'
       container: null,
       breakpointLG: 1200,
       breakpointMD: 1024,
@@ -42,7 +42,8 @@ export default class Rain{
       },
 
       //callbacks
-      onChange: null
+      onAdd: null,
+      onDone: null
     }
     this.el = config.container || config.element || config.el || config.holder || config.parent
     this.config = Object.assign(dconf, config)
@@ -103,7 +104,6 @@ export default class Rain{
         minH = h
       }
     }
-    if(this.config.debug) console.log('Columns heights : ', heights)
     return min
   }
 
@@ -157,6 +157,9 @@ export default class Rain{
 
       this.onAdd(element, element.getAttribute('data-index'))
 
+      this.scheduled.splice(0, 1)
+      if(!this.scheduled.length) this.onDone()
+
     }, timeout))
 
   }
@@ -190,7 +193,19 @@ export default class Rain{
     return this.config.cols[bp]
   }
 
+  /**
+   * Triggers each time an element is added to rainContainer
+   **/
   onAdd(element, index){
+    if(this.config.debug) console.log('onAdd callback !')
     if(this.config.onAdd) this.config.onAdd(element, index)
+  }
+
+  /**
+   * Triggers when all scheduled-add elements has been added
+   **/
+  onDone(){
+    if(this.config.debug) console.log('onDone callback !')
+    if(this.config.onDone) this.config.onDone()
   }
 } //RainContainer

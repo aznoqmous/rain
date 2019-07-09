@@ -73,12 +73,10 @@
           }, 100)
         }
       });
-      for (var i = 0; i < 1000; i++) {
+      for (var i = 0; i < 10; i++) {
         rainContainer.add('<div class="blou">'+i+'</div>')
       }
-      setTimeout(()=>{
-        rainContainer.clear()
-      }, 2000)
+      
 
 
     });
