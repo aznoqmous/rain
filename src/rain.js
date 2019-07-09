@@ -11,6 +11,7 @@ export default class Rain{
 
   init(){
     this.currentBreakPoint = this.getCurrentBreakPoint()
+    this.scheduled = []
 
     if(this.config.debug) console.log('rain.js: breakpoint '+this.currentBreakPoint)
     if(this.config.debug) window.rain = this
@@ -118,6 +119,10 @@ export default class Rain{
   clearChildren(){
     this.el.innerHTML = ''
   }
+  clearScheduled(){
+    this.scheduled.map( scheduled => clearTimeout(scheduled) )
+    this.scheduled = []
+  }
 
   add(addedElement){
     let element = addedElement
@@ -130,8 +135,7 @@ export default class Rain{
       this.lastAddedT = Date.now() + timeout
     }
 
-    setTimeout(()=>{
-
+    this.scheduled.push(setTimeout(()=>{
 
       if(typeof(addedElement) == 'string') {
         element = document.createElement('div')
@@ -153,12 +157,13 @@ export default class Rain{
 
       this.onAdd(element, element.getAttribute('data-index'))
 
-    }, timeout)
+    }, timeout))
 
   }
   clear(){
     this.children = []
     this.clearChildren()
+    this.clearScheduled()
     this.init()
   }
 

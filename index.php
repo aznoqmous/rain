@@ -20,7 +20,7 @@
   <body>
 
     <div id="rainContainer">
-      <div class="blou">blou 1</div>
+      <div class="blou">everything will be cleared in 2sec</div>
       <div class="blou">blou 2</div>
       <div class="blou">blou 3</div>
       <div class="blou">blou 4</div>
@@ -58,25 +58,13 @@
 
       let element = document.getElementById('rainContainer');
 
-      // let rainContainer = new Rain({
-      //
-      //   parent: element
-      //
-      // })
-
-      // Rain-bow (:
-
       let rainContainer = new Rain({
         parent: element,
-        // prepend: true,
         debug: true,
         childInterval: 200,
         onAdd: (el, index)=>{
           let T = 255
-          // let h = 180 + 60 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
-          // let s = 50 * Math.sin( 2 * index / T * 2 * Math.PI ) + 100
           let h = 255 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
-          // el.style.backgroundColor = 'hsl( ' + h +', ' + s + '%, 50%)'
           el.style.backgroundColor = 'hsl( ' + h +', 100%, 50%)'
           el.style.height = (Math.random()*200+10) / 2 +'px'
 
@@ -85,10 +73,12 @@
           }, 100)
         }
       });
+      for (var i = 0; i < 1000; i++) {
+        rainContainer.add('<div class="blou">'+i+'</div>')
+      }
       setTimeout(()=>{
-        rainContainer.add('<div class="blou"></div>')
-      }, 1000)
-      rainContainer.add('<div class="blou"></div>')
+        rainContainer.clear()
+      }, 2000)
 
 
     });
