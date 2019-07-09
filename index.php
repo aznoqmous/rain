@@ -20,35 +20,7 @@
   <body>
 
     <div id="rainContainer">
-      <div class="blou">everything will be cleared in 2sec</div>
-      <div class="blou">blou 2</div>
-      <div class="blou">blou 3</div>
-      <div class="blou">blou 4</div>
-      <div class="blou">blou 5</div>
-
-      <!-- <div>
-        hey im a <br>
-        simple div
-      </div>
-      <div>
-        hey me too !
-      </div>
-      <div>
-        hey <br>
-        im <br>
-        taller <br>
-        so i break <br>
-        divs order
-      </div>
-      <div>
-        im the 5th div
-      </div>
-      <div>
-        im the 6th div
-      </div>
-      <div>
-        im the 7th div
-      </div> -->
+      <div class="blou">onDone callback will add 5 elements when it triggers</div>
     </div>
 
   </body>
@@ -66,17 +38,22 @@
           let T = 255
           let h = 255 * ( 1 + Math.sin( index / T * 2 * Math.PI ) ) / 2
           el.style.backgroundColor = 'hsl( ' + h +', 100%, 50%)'
-          el.style.height = (Math.random()*200+10) / 2 +'px'
+          el.style.height = (Math.random()*200+100) / 2 +'px'
 
           setTimeout(()=>{
             el.classList.add('active')
           }, 100)
+        },
+        onDone: ()=>{
+          setTimeout(()=>{
+            for (var i = 1; i <= 5; i++) {
+              rainContainer.add(''+i)
+            }
+          }, 1000)
         }
       });
-      for (var i = 0; i < 10; i++) {
-        rainContainer.add('<div class="blou">'+i+'</div>')
-      }
-      
+
+
 
 
     });
